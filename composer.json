@@ -1,0 +1,10 @@
+{
+    "name": "qunabu/gitlab-autodevops-laravel",
+    "authors": [
+        {
+            "name": "Mateusz",
+            "email": "mateusz@qunabu.com"
+        }
+    ],
+    "require": {}
+}

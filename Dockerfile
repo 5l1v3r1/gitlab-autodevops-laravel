@@ -30,10 +30,10 @@ RUN sudo sed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /et
   && chown -R docker:docker /var/www \
   && chmod -R 777 /var/www/html/storage
 
-CMD sudo /bin/bash -c "/usr/bin/mysqld_safe &" \
-  && sleep 10s  \
-  && sudo mysql -e "CREATE DATABASE $DB_NAME; CREATE USER $DB_USER@localhost IDENTIFIED BY '$DB_PASS'; GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost'; FLUSH PRIVILEGES;" \
-  && sudo composer update \
-  && php artisan migrate:fresh --seed \
-  && apache2-foreground
+#CMD sudo /bin/bash -c "/usr/bin/mysqld_safe &" \
+#  && sleep 10s  \
+#  && sudo mysql -e "CREATE DATABASE $DB_NAME; CREATE USER $DB_USER@localhost IDENTIFIED BY '$DB_PASS'; GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost'; FLUSH PRIVILEGES;" \
+#  && sudo composer update \
+#  && php artisan migrate:fresh --seed \
+#  && apache2-foreground
 
