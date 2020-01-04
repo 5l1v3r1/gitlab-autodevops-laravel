@@ -1,4 +1,4 @@
-ARG PHP_EXTENSIONS="mysql mysqli pdo_mysql gd imap"
+  ARG PHP_EXTENSIONS="mysql mysqli pdo_mysql gd imap"
 FROM thecodingmachine/php:7.3-v2-apache-node8
 
 # docker image build -t abc . && docker run -p 5000:5000 abc
@@ -30,10 +30,10 @@ RUN sudo sed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /et
   && chown -R docker:docker /var/www \
   && chmod -R 777 /var/www/html/storage
 
-#CMD sudo /bin/bash -c "/usr/bin/mysqld_safe &" \
-#  && sleep 10s  \
-#  && sudo mysql -e "CREATE DATABASE $DB_NAME; CREATE USER $DB_USER@localhost IDENTIFIED BY '$DB_PASS'; GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost'; FLUSH PRIVILEGES;" \
-#  && sudo composer update \
-#  && php artisan migrate:fresh --seed \
-#  && apache2-foreground
+CMD sudo /bin/bash -c "/usr/bin/mysqld_safe &" \
+  && sleep 10s  \
+  && sudo mysql -e "CREATE DATABASE $DB_NAME; CREATE USER $DB_USER@localhost IDENTIFIED BY '$DB_PASS'; GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost'; FLUSH PRIVILEGES;" \
+  && sudo composer update \
+  && sudo /bin/bash entrypoint.sh \
+  && apache2-foreground
 
