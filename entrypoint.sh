@@ -1,3 +1,3 @@
 #!/bin/bash
-sudo composer update
+# sudo composer update
 php artisan migrate:fresh --seed
