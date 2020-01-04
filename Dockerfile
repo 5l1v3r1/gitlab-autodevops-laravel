@@ -17,7 +17,7 @@ ENV APP_ENV=prod \
 EXPOSE 5000
 
 COPY / /var/www/html/
-COPY .env.staging /var/www/html/.env
+#COPY .env.staging /var/www/html/.env
 
 USER root
 
@@ -26,14 +26,17 @@ RUN  DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-commo
   && apt-get update \
   && DEBIAN_FRONTEND=noninteractive apt-get install --allow-unauthenticated -y mariadb-common mariadb-server mariadb-client
 
-RUN sudo sed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf \
-  && chown -R docker:docker /var/www \
-  && chmod -R 777 /var/www/html/storage \
-  && composer update 
+RUN sudo sed -i "s/80/$PORT/g" /etc/apache2/sites-available/000-default.conf /etc/apache2/ports.conf 
+#  && chown -R docker:docker /var/www \
+#  && chmod -R 777 /var/www/html/storage \
+#  && composer update 
+
+RUN sudo /bin/bash -c "/usr/bin/mysqld_safe &" \
+  && sleep 10s  \
+  && sudo mysql -e "CREATE DATABASE $DB_NAME; CREATE USER $DB_USER@localhost IDENTIFIED BY '$DB_PASS'; GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost'; FLUSH PRIVILEGES;" 
 
 CMD sudo /bin/bash -c "/usr/bin/mysqld_safe &" \
   && sleep 10s  \
-  && sudo mysql -e "CREATE DATABASE $DB_NAME; CREATE USER $DB_USER@localhost IDENTIFIED BY '$DB_PASS'; GRANT ALL PRIVILEGES ON $DB_NAME.* TO '$DB_USER'@'localhost'; FLUSH PRIVILEGES;" \
   && sudo /bin/bash entrypoint.sh \
-  && apache2-foreground
+  && apache2-foreground   
 
